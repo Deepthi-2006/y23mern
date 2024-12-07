@@ -105,7 +105,7 @@ const Home = () => {
             WebkitTextStroke: "1px white",
           }}
         >
-          Welcome to Library Central
+          Welcome to E-Library 
         </Typography>
       </BackgroundSection>
       <FeaturesSection>

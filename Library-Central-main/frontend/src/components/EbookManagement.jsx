@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { AppContext } from "../context/AppContext";
+
 import axios from "axios";
 import {
   Container,
@@ -42,6 +43,9 @@ const EbookManagement = () => {
     authors: "",
     section: "",
   });
+
+
+
   const [editEbook, setEditEbook] = useState(null);
   const [open, setOpen] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
@@ -71,12 +75,15 @@ const EbookManagement = () => {
         const res = await axios.get("http://localhost:5000/api/user/sections", {
           headers: { Authorization: `Bearer ${token}` },
         });
+        console.log("Sections fetched:", res.data);
         setSections(res.data);
       } catch (err) {
-        console.error(err);
+        console.error("Error fetching sections:", err);
+        toast.error("Failed to load sections");
       }
     };
-
+    
+    
     fetchEbooks();
     fetchSections();
   }, [token]);
@@ -266,7 +273,7 @@ const EbookManagement = () => {
       >
         {sections.map((section) => (
           <MenuItem key={section._id} value={section._id}>
-            {section.name}
+            {section.title}
           </MenuItem>
         ))}
       </TextField>
@@ -470,11 +477,27 @@ const EbookManagement = () => {
             fullWidth
             required
           >
-            {sections.map((section) => (
-              <MenuItem key={section._id} value={section._id}>
-                {section.name}
-              </MenuItem>
-            ))}
+            <TextField
+  select
+  label="Section"
+  name="section"
+  value={newEbook.section}
+  onChange={handleChange}
+  fullWidth
+  required
+>
+  {sections.length > 0 ? (
+    sections.map((section) => (
+      <MenuItem key={section._id} value={section._id}>
+        {section.title || section.name}
+      </MenuItem>
+    ))
+  ) : (
+    <MenuItem disabled>No sections available</MenuItem>
+  )}
+</TextField>
+
+
           </TextField>
           <Button
             onClick={updateEbook}

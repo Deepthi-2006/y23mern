@@ -59,7 +59,7 @@ const Navbar = () => {
               WebkitTextFillColor: "transparent",
             }}
           >
-            Library Central
+            E-Library 
           </Typography>
         </Link>
         {isMatch ? (
